@@ -1,0 +1,351 @@
+/* ===========================
+   Base & Reset
+=========================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  background-color: #f5f0e8;
+  color: #2d2a1e;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================
+   Header
+=========================== */
+header {
+  background-color: #3a7d44;
+  color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.header-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.bird-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+header h1 {
+  font-size: 2.4rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.3rem;
+}
+
+.tagline {
+  font-size: 1rem;
+  opacity: 0.88;
+  font-style: italic;
+}
+
+/* ===========================
+   Main layout
+=========================== */
+main {
+  flex: 1;
+  max-width: 760px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* ===========================
+   Form
+=========================== */
+.bird-form {
+  background: #fffdf6;
+  border: 2px solid #c8b98a;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(58, 125, 68, 0.1);
+}
+
+fieldset {
+  border: none;
+  margin-bottom: 1.8rem;
+}
+
+legend {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #3a7d44;
+  margin-bottom: 0.8rem;
+}
+
+.hint {
+  font-weight: normal;
+  font-size: 0.88rem;
+  color: #7a6f55;
+  font-style: italic;
+}
+
+/* Colours */
+.colour-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.colour-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border: 2px solid #c8b98a;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  background: #fff;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+
+.colour-label:hover {
+  border-color: #3a7d44;
+  background: #edf7ef;
+}
+
+.colour-label input[type="checkbox"] {
+  accent-color: #3a7d44;
+  width: 16px;
+  height: 16px;
+}
+
+/* Colour dot accents */
+.colour-label::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+.colour-red::before    { background: #e74c3c; }
+.colour-orange::before { background: #e67e22; }
+.colour-yellow::before { background: #f1c40f; }
+.colour-green::before  { background: #27ae60; }
+.colour-blue::before   { background: #2980b9; }
+.colour-purple::before { background: #8e44ad; }
+.colour-brown::before  { background: #8B5E3C; }
+.colour-black::before  { background: #222; }
+.colour-white::before  { background: #fff; border: 1px solid #aaa; }
+.colour-grey::before   { background: #888; }
+.colour-pink::before   { background: #e91e8c; }
+.colour-beige::before  { background: #d9c49a; }
+
+/* Text inputs and textarea */
+.text-input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  border: 2px solid #c8b98a;
+  border-radius: 8px;
+  background: #fff;
+  color: #2d2a1e;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: #3a7d44;
+}
+
+/* Size radio buttons */
+.size-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.size-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border: 2px solid #c8b98a;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  background: #fff;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+
+.size-label:hover {
+  border-color: #3a7d44;
+  background: #edf7ef;
+}
+
+.size-label input[type="radio"] {
+  accent-color: #3a7d44;
+  width: 16px;
+  height: 16px;
+}
+
+/* File upload */
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.2rem;
+  background: #edf7ef;
+  border: 2px dashed #3a7d44;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #3a7d44;
+  transition: background 0.2s;
+}
+
+.file-label:hover {
+  background: #d6eeda;
+}
+
+.file-label input[type="file"] {
+  display: none;
+}
+
+.file-icon {
+  font-size: 1.3rem;
+}
+
+/* Submit button */
+.identify-btn {
+  display: block;
+  width: 100%;
+  padding: 0.9rem;
+  margin-top: 0.5rem;
+  background-color: #3a7d44;
+  color: #fff;
+  font-family: inherit;
+  font-size: 1.15rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.identify-btn:hover {
+  background-color: #2e6336;
+}
+
+.identify-btn:active {
+  transform: scale(0.98);
+}
+
+/* ===========================
+   Error box
+=========================== */
+.error-box {
+  margin-top: 1.5rem;
+  padding: 1rem 1.2rem;
+  background: #fdecea;
+  border: 2px solid #e74c3c;
+  border-radius: 8px;
+  color: #c0392b;
+}
+
+/* ===========================
+   Results
+=========================== */
+.results {
+  margin-top: 2.5rem;
+}
+
+.results h2 {
+  font-size: 1.6rem;
+  color: #3a7d44;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.bird-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+}
+
+.bird-card {
+  background: #fffdf6;
+  border: 2px solid #c8b98a;
+  border-radius: 12px;
+  padding: 1.4rem 1.2rem;
+  position: relative;
+  box-shadow: 0 3px 10px rgba(58, 125, 68, 0.1);
+}
+
+.bird-number {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #3a7d44;
+  color: #fff;
+  font-weight: bold;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.bird-card h3 {
+  font-size: 1.15rem;
+  color: #3a7d44;
+  margin-bottom: 0.6rem;
+  margin-top: 0.3rem;
+  text-align: center;
+}
+
+.bird-card p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #4a4030;
+}
+
+.try-again-hint {
+  text-align: center;
+  margin-top: 1.2rem;
+  color: #7a6f55;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* ===========================
+   Footer
+=========================== */
+footer {
+  background: #3a7d44;
+  color: #c8e6cc;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  margin-top: 2rem;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 500px) {
+  header h1 { font-size: 1.8rem; }
+  .bird-form { padding: 1.2rem; }
+}

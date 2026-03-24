@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What's That Bird?</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <span class="bird-icon">&#x1F426;</span>
+      <h1>What's That Bird?</h1>
+      <p class="tagline">Describe what you saw &mdash; we'll figure out what it was!</p>
+    </div>
+  </header>
+
+  <main>
+    <form action="/identify" method="POST" enctype="multipart/form-data" class="bird-form">
+
+      <!-- COLOURS -->
+      <fieldset>
+        <legend>What colours did you see? <span class="hint">(pick all that apply)</span></legend>
+        <div class="colour-grid">
+          {% set colours = ['Red','Orange','Yellow','Green','Blue','Purple','Brown','Black','White','Grey','Pink','Beige'] %}
+          {% for colour in colours %}
+          <label class="colour-label colour-{{ colour | lower }}">
+            <input type="checkbox" name="colours" value="{{ colour }}" />
+            <span>{{ colour }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+      <!-- PATTERN -->
+      <fieldset>
+        <legend>What was its pattern? <span class="hint">(e.g. spotted, striped, plain)</span></legend>
+        <input
+          type="text"
+          name="pattern"
+          placeholder="e.g. spotted with white tips on the wings"
+          class="text-input"
+          maxlength="200"
+        />
+      </fieldset>
+
+      <!-- SIZE -->
+      <fieldset>
+        <legend>How big was it?</legend>
+        <div class="size-options">
+          {% set sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Very Large'] %}
+          {% for size in sizes %}
+          <label class="size-label">
+            <input type="radio" name="size" value="{{ size }}" {% if loop.index == 3 %}checked{% endif %} />
+            <span>{{ size }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+      <!-- PICTURE -->
+      <fieldset>
+        <legend>Got a photo? <span class="hint">(optional &mdash; helps a lot!)</span></legend>
+        <label class="file-label" for="picture">
+          <span class="file-icon">&#x1F4F7;</span>
+          <span class="file-text" id="file-text">Click to choose a photo</span>
+          <input type="file" id="picture" name="picture" accept="image/*" onchange="updateFileName(this)" />
+        </label>
+      </fieldset>
+
+      <!-- DESCRIPTION -->
+      <fieldset>
+        <legend>Anything else to add? <span class="hint">(optional)</span></legend>
+        <textarea
+          name="description"
+          rows="3"
+          placeholder="e.g. It was by the lake, sitting on a rock and eating a fish. It had a long curved beak."
+          class="text-input"
+          maxlength="500"
+        ></textarea>
+      </fieldset>
+
+      <button type="submit" class="identify-btn">
+        <span>&#x1F50D;</span> Identify Bird!
+      </button>
+
+    </form>
+
+    <!-- ERROR -->
+    {% if error %}
+    <div class="error-box">
+      <strong>Oops!</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    <!-- RESULTS -->
+    {% if birds %}
+    <section class="results">
+      <h2>&#x1F989; It could be one of these!</h2>
+      <div class="bird-cards">
+        {% for bird in birds %}
+        <div class="bird-card">
+          <div class="bird-number">{{ loop.index }}</div>
+          <h3>{{ bird.name }}</h3>
+          <p>{{ bird.description }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      <p class="try-again-hint">Not quite right? Scroll up and add more details!</p>
+    </section>
+    {% endif %}
+
+  </main>
+
+  <footer>
+    <p>Made for young birdwatchers &mdash; no coins needed &#x1F4AA;</p>
+  </footer>
+
+  <script>
+    function updateFileName(input) {
+      const label = document.getElementById('file-text');
+      if (input.files && input.files[0]) {
+        label.textContent = input.files[0].name;
+      } else {
+        label.textContent = 'Click to choose a photo';
+      }
+    }
+
+    // Scroll to results automatically if they exist
+    window.addEventListener('DOMContentLoaded', function () {
+      const results = document.querySelector('.results');
+      if (results) {
+        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  </script>
+
+</body>
+</html>
