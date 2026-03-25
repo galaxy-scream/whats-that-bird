@@ -9,7 +9,11 @@ load_dotenv()
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10 MB max upload
 
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+def get_client():
+    api_key = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        raise ValueError("GROQ_API_KEY environment variable is not set.")
+    return Groq(api_key=api_key)
 
 
 def build_prompt(colours, pattern, size, description):
@@ -29,7 +33,7 @@ def build_prompt(colours, pattern, size, description):
 
 
 def ask_groq_text(prompt):
-    response = client.chat.completions.create(
+    response = get_client().chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=[
             {
@@ -51,7 +55,7 @@ def ask_groq_text(prompt):
 def ask_groq_vision(prompt, image_bytes, mime_type):
     b64 = base64.standard_b64encode(image_bytes).decode("utf-8")
     data_url = f"data:{mime_type};base64,{b64}"
-    response = client.chat.completions.create(
+    response = get_client().chat.completions.create(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
         messages=[
             {
@@ -132,7 +136,7 @@ def identify():
         return render_template(
             "index.html",
             birds=None,
-            error=f"Something went wrong talking to the AI: {e}",
+            error=f"Something went wrong talking to the AI: [{type(e).__name__}] {e}",
         )
 
 
