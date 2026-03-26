@@ -22,40 +22,56 @@ body {
 header {
   background-color: #3a7d44;
   color: #fff;
-  padding: 2rem 1rem;
+  padding: 1.6rem 1rem;
   text-align: center;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+  position: relative;
 }
 
 .header-inner {
-  max-width: 700px;
+  max-width: 820px;
   margin: 0 auto;
-}
-
-.bird-icon {
-  font-size: 3rem;
-  display: block;
-  margin-bottom: 0.4rem;
+  position: relative;
 }
 
 header h1 {
-  font-size: 2.4rem;
-  letter-spacing: 1px;
-  margin-bottom: 0.3rem;
+  font-size: 2.1rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
 }
 
 .tagline {
-  font-size: 1rem;
-  opacity: 0.88;
+  font-size: 0.95rem;
+  opacity: 0.85;
   font-style: italic;
 }
 
+.logbook-link {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-family: sans-serif;
+  border: 1px solid rgba(255,255,255,0.35);
+  transition: background 0.2s;
+}
+
+.logbook-link:hover {
+  background: rgba(255,255,255,0.3);
+}
+
 /* ===========================
-   Main layout
+   Main
 =========================== */
 main {
   flex: 1;
-  max-width: 760px;
+  max-width: 860px;
   width: 100%;
   margin: 2rem auto;
   padding: 0 1rem;
@@ -66,71 +82,83 @@ main {
 =========================== */
 .bird-form {
   background: #fffdf6;
-  border: 2px solid #c8b98a;
+  border: 1.5px solid #c8b98a;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 4px 16px rgba(58, 125, 68, 0.1);
+  box-shadow: 0 4px 18px rgba(58,125,68,0.09);
 }
 
 fieldset {
   border: none;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.6rem;
 }
 
 legend {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: bold;
-  color: #3a7d44;
-  margin-bottom: 0.8rem;
+  color: #2e6336;
+  margin-bottom: 0.7rem;
 }
 
 .hint {
   font-weight: normal;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: #7a6f55;
   font-style: italic;
 }
+
+/* Location status */
+.location-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.4rem;
+  font-size: 0.85rem;
+  font-family: sans-serif;
+  color: #7a6f55;
+  background: #f0ede3;
+  padding: 0.45rem 0.85rem;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+.location-status.loc-ok  { color: #2e6336; background: #e6f4e8; }
+.location-status.loc-warn { color: #8a5a00; background: #fff3cd; }
 
 /* Colours */
 .colour-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
 .colour-label {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.8rem;
-  border: 2px solid #c8b98a;
+  gap: 0.35rem;
+  padding: 0.38rem 0.75rem;
+  border: 1.5px solid #c8b98a;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   background: #fff;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.15s, background 0.15s;
   user-select: none;
 }
 
-.colour-label:hover {
-  border-color: #3a7d44;
-  background: #edf7ef;
-}
+.colour-label:hover { border-color: #3a7d44; background: #edf7ef; }
 
 .colour-label input[type="checkbox"] {
   accent-color: #3a7d44;
-  width: 16px;
-  height: 16px;
+  width: 15px; height: 15px;
 }
 
-/* Colour dot accents */
 .colour-label::before {
   content: '';
   display: inline-block;
-  width: 14px;
-  height: 14px;
+  width: 13px; height: 13px;
   border-radius: 50%;
-  border: 1px solid rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,0,0,0.12);
   flex-shrink: 0;
 }
 .colour-red::before    { background: #e74c3c; }
@@ -141,194 +169,351 @@ legend {
 .colour-purple::before { background: #8e44ad; }
 .colour-brown::before  { background: #8B5E3C; }
 .colour-black::before  { background: #222; }
-.colour-white::before  { background: #fff; border: 1px solid #aaa; }
+.colour-white::before  { background: #fff; border-color: #aaa; }
 .colour-grey::before   { background: #888; }
 .colour-pink::before   { background: #e91e8c; }
 .colour-beige::before  { background: #d9c49a; }
 
-/* Text inputs and textarea */
+/* Text inputs */
 .text-input {
   width: 100%;
-  padding: 0.65rem 0.9rem;
+  padding: 0.6rem 0.85rem;
   font-family: inherit;
-  font-size: 0.95rem;
-  border: 2px solid #c8b98a;
+  font-size: 0.92rem;
+  border: 1.5px solid #c8b98a;
   border-radius: 8px;
   background: #fff;
   color: #2d2a1e;
   resize: vertical;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s;
 }
+.text-input:focus { outline: none; border-color: #3a7d44; }
 
-.text-input:focus {
-  outline: none;
-  border-color: #3a7d44;
-}
-
-/* Size radio buttons */
-.size-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+/* Size */
+.size-options { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 
 .size-label {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.45rem 1rem;
-  border: 2px solid #c8b98a;
+  gap: 0.35rem;
+  padding: 0.38rem 0.9rem;
+  border: 1.5px solid #c8b98a;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   background: #fff;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.15s, background 0.15s;
   user-select: none;
 }
-
-.size-label:hover {
-  border-color: #3a7d44;
-  background: #edf7ef;
-}
-
-.size-label input[type="radio"] {
-  accent-color: #3a7d44;
-  width: 16px;
-  height: 16px;
-}
+.size-label:hover { border-color: #3a7d44; background: #edf7ef; }
+.size-label input[type="radio"] { accent-color: #3a7d44; width: 15px; height: 15px; }
 
 /* File upload */
 .file-label {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.2rem;
+  gap: 0.55rem;
+  padding: 0.55rem 1.1rem;
   background: #edf7ef;
-  border: 2px dashed #3a7d44;
+  border: 1.5px dashed #3a7d44;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.95rem;
-  color: #3a7d44;
-  transition: background 0.2s;
+  font-size: 0.92rem;
+  color: #2e6336;
+  font-family: sans-serif;
+  transition: background 0.15s;
 }
+.file-label:hover { background: #d6eeda; }
+.file-label input[type="file"] { display: none; }
+.file-icon { font-size: 1.2rem; }
 
-.file-label:hover {
-  background: #d6eeda;
-}
-
-.file-label input[type="file"] {
-  display: none;
-}
-
-.file-icon {
-  font-size: 1.3rem;
-}
-
-/* Submit button */
+/* Submit */
 .identify-btn {
   display: block;
   width: 100%;
-  padding: 0.9rem;
-  margin-top: 0.5rem;
+  padding: 0.85rem;
+  margin-top: 0.4rem;
   background-color: #3a7d44;
   color: #fff;
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  letter-spacing: 0.5px;
-  transition: background 0.2s, transform 0.1s;
+  transition: background 0.15s, transform 0.1s;
 }
-
-.identify-btn:hover {
-  background-color: #2e6336;
-}
-
-.identify-btn:active {
-  transform: scale(0.98);
-}
+.identify-btn:hover  { background-color: #2e6336; }
+.identify-btn:active { transform: scale(0.98); }
 
 /* ===========================
-   Error box
+   Error
 =========================== */
 .error-box {
-  margin-top: 1.5rem;
-  padding: 1rem 1.2rem;
+  margin-top: 1.4rem;
+  padding: 0.9rem 1.1rem;
   background: #fdecea;
-  border: 2px solid #e74c3c;
+  border: 1.5px solid #e74c3c;
   border-radius: 8px;
   color: #c0392b;
+  font-family: sans-serif;
+  font-size: 0.9rem;
 }
 
 /* ===========================
-   Results
+   Results — bird cards
 =========================== */
 .results {
   margin-top: 2.5rem;
 }
 
 .results h2 {
-  font-size: 1.6rem;
-  color: #3a7d44;
+  font-size: 1.45rem;
+  color: #2e6336;
   margin-bottom: 1.2rem;
   text-align: center;
 }
 
 .bird-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 1.2rem;
 }
 
 .bird-card {
   background: #fffdf6;
-  border: 2px solid #c8b98a;
+  border: 1.5px solid #c8b98a;
   border-radius: 12px;
-  padding: 1.4rem 1.2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 3px 12px rgba(58,125,68,0.09);
+  transition: box-shadow 0.2s, border-color 0.2s;
   position: relative;
-  box-shadow: 0 3px 10px rgba(58, 125, 68, 0.1);
 }
 
-.bird-number {
+.bird-card.card-selected {
+  border-color: #3a7d44;
+  box-shadow: 0 0 0 3px rgba(58,125,68,0.25);
+}
+
+.card-num {
   position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 10px;
+  left: 10px;
   background: #3a7d44;
   color: #fff;
   font-weight: bold;
-  width: 28px;
-  height: 28px;
+  width: 26px; height: 26px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-family: sans-serif;
+  z-index: 1;
 }
 
-.bird-card h3 {
-  font-size: 1.15rem;
+.card-img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-img-fallback {
+  width: 100%;
+  height: 170px;
+  background: #e8f5ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
   color: #3a7d44;
-  margin-bottom: 0.6rem;
-  margin-top: 0.3rem;
-  text-align: center;
 }
 
-.bird-card p {
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: #4a4030;
+.card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
+
+.card-body h3 {
+  font-size: 1.1rem;
+  color: #2e6336;
+  margin-bottom: 0.5rem;
+}
+
+.card-desc {
+  font-size: 0.87rem;
+  line-height: 1.55;
+  color: #4a4030;
+  margin-bottom: 0.8rem;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.85rem;
+  font-family: sans-serif;
+  font-size: 0.82rem;
+}
+
+.stat-label {
+  color: #7a6f55;
+  padding: 0.18rem 0.4rem 0.18rem 0;
+  width: 45%;
+  vertical-align: top;
+}
+
+.stat-value {
+  color: #2d2a1e;
+  font-weight: 600;
+  padding: 0.18rem 0;
+}
+
+.select-btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 0.6rem;
+  background: #3a7d44;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.select-btn:hover   { background: #2e6336; }
+.select-btn.btn-added { background: #5a9e5a; cursor: default; }
 
 .try-again-hint {
   text-align: center;
   margin-top: 1.2rem;
   color: #7a6f55;
   font-style: italic;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
+
+/* ===========================
+   Logbook — Top Trumps cards
+=========================== */
+.logbook-page main {
+  max-width: 1000px;
+}
+
+.trump-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.3rem;
+}
+
+.trump-card {
+  background: #fffdf6;
+  border: 2px solid #3a7d44;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  font-family: sans-serif;
+}
+
+.trump-header {
+  background: #3a7d44;
+  color: #fff;
+  padding: 0.55rem 0.8rem;
+  text-align: center;
+}
+
+.trump-name {
+  font-size: 0.95rem;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+}
+
+.trump-img {
+  width: 100%;
+  height: 145px;
+  object-fit: cover;
+  display: block;
+}
+
+.trump-img-fallback {
+  width: 100%;
+  height: 145px;
+  background: #e8f5ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+}
+
+.trump-body {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.trump-stats {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.6rem;
+}
+
+.trump-stat-label {
+  color: #fff;
+  background: #5a9e6a;
+  padding: 0.28rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  width: 42%;
+}
+
+.trump-stat-value {
+  background: #edf7ef;
+  color: #2d2a1e;
+  padding: 0.28rem 0.5rem;
+  font-size: 0.82rem;
+  font-weight: bold;
+}
+
+.trump-stats tr + tr .trump-stat-label,
+.trump-stats tr + tr .trump-stat-value {
+  border-top: 1px solid #d6eeda;
+}
+
+.trump-desc {
+  font-size: 0.8rem;
+  color: #5a5040;
+  line-height: 1.45;
+  margin-bottom: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.trump-date {
+  font-size: 0.75rem;
+  color: #9a8f75;
+  margin-top: auto;
+  padding-top: 0.4rem;
+  border-top: 1px dashed #c8b98a;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #7a6f55;
+}
+.empty-icon { font-size: 4rem; margin-bottom: 1rem; }
+.empty-state h2 { font-size: 1.4rem; color: #3a7d44; margin-bottom: 0.5rem; }
+.empty-state p  { font-size: 0.95rem; max-width: 360px; margin: 0 auto 1.2rem; }
 
 /* ===========================
    Footer
@@ -337,15 +522,17 @@ footer {
   background: #3a7d44;
   color: #c8e6cc;
   text-align: center;
-  padding: 1rem;
-  font-size: 0.85rem;
+  padding: 0.9rem;
+  font-size: 0.82rem;
   margin-top: 2rem;
 }
 
 /* ===========================
    Responsive
 =========================== */
-@media (max-width: 500px) {
-  header h1 { font-size: 1.8rem; }
+@media (max-width: 520px) {
+  header h1 { font-size: 1.6rem; }
+  .logbook-link { position: static; transform: none; display: block; width: fit-content; margin: 0 auto 0.8rem; }
   .bird-form { padding: 1.2rem; }
+  .bird-cards { grid-template-columns: 1fr; }
 }

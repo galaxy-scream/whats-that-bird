@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Logbook &mdash; What's That Bird?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦜</text></svg>">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body class="logbook-page">
+
+  <header>
+    <div class="header-inner">
+      <a href="/" class="logbook-link">&#x2190; Identify a Bird</a>
+      <h1>&#x1F4D6; My Logbook</h1>
+      <p class="tagline">Every bird you've identified, saved here.</p>
+    </div>
+  </header>
+
+  <main>
+    <div id="logbook-empty" class="empty-state" style="display:none">
+      <div class="empty-icon">&#x1F426;</div>
+      <h2>No birds logged yet!</h2>
+      <p>Head back to the identifier, spot a bird, and tap <strong>"That's my bird!"</strong> to save it here.</p>
+      <a href="/" class="identify-btn" style="display:inline-block;text-decoration:none;margin-top:1rem">
+        Identify a Bird
+      </a>
+    </div>
+
+    <div id="card-grid" class="trump-grid"></div>
+  </main>
+
+  <footer>
+    <p>Built for curious birdwatchers &mdash; no coins needed.</p>
+  </footer>
+
+  <script>
+    const log = JSON.parse(localStorage.getItem('birdlog') || '[]');
+    const grid = document.getElementById('card-grid');
+    const empty = document.getElementById('logbook-empty');
+
+    if (log.length === 0) {
+      empty.style.display = 'block';
+    } else {
+      log.forEach(function (bird) {
+        const card = document.createElement('div');
+        card.className = 'trump-card';
+
+        const imgHtml = bird.image
+          ? `<img class="trump-img" src="${bird.image}" alt="${bird.name}"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">`
+          : '';
+        const fallbackHtml = `<div class="trump-img-fallback" ${bird.image ? 'style="display:none"' : ''}>&#x1F426;</div>`;
+
+        const stats = [
+          { label: 'Wingspan', value: bird.wingspan },
+          { label: 'Weight',   value: bird.weight   },
+          { label: 'Diet',     value: bird.diet     },
+          { label: 'Habitat',  value: bird.habitat  },
+        ]
+        .filter(function (s) { return s.value; })
+        .map(function (s) {
+          return `<tr>
+            <td class="trump-stat-label">${s.label}</td>
+            <td class="trump-stat-value">${s.value}</td>
+          </tr>`;
+        }).join('');
+
+        card.innerHTML = `
+          <div class="trump-header">
+            <span class="trump-name">${bird.name}</span>
+          </div>
+          ${imgHtml}
+          ${fallbackHtml}
+          <div class="trump-body">
+            <table class="trump-stats">${stats}</table>
+            <p class="trump-desc">${bird.description}</p>
+            <div class="trump-date">Spotted: ${bird.date || 'Unknown'}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,30 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>What's That Bird?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦜</text></svg>">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
 
   <header>
     <div class="header-inner">
-      <span class="bird-icon">&#x1F426;</span>
-      <h1>What's That Bird?</h1>
-      <p class="tagline">Describe what you saw &mdash; we'll figure out what it was!</p>
+      <a href="/logbook" class="logbook-link">My Logbook &#x1F4D6;</a>
+      <h1>&#x1F426; What's That Bird?</h1>
+      <p class="tagline">Describe what you saw &mdash; we'll figure out what it was.</p>
     </div>
   </header>
 
   <main>
     <form action="/identify" method="POST" enctype="multipart/form-data" class="bird-form">
 
+      <!-- Hidden location field populated by JS -->
+      <input type="hidden" name="location" id="location-field" value="" />
+
+      <div class="location-status" id="location-status">
+        <span class="loc-icon">&#x1F4CD;</span>
+        <span id="loc-text">Detecting your location&hellip;</span>
+      </div>
+
       <!-- COLOURS -->
       <fieldset>
-        <legend>What colours did you see? <span class="hint">(pick all that apply)</span></legend>
+        <legend>Colours <span class="hint">&mdash; tick all that you saw</span></legend>
         <div class="colour-grid">
-          {% set colours = ['Red','Orange','Yellow','Green','Blue','Purple','Brown','Black','White','Grey','Pink','Beige'] %}
-          {% for colour in colours %}
+          {% for colour in ['Red','Orange','Yellow','Green','Blue','Purple','Brown','Black','White','Grey','Pink','Beige'] %}
           <label class="colour-label colour-{{ colour | lower }}">
             <input type="checkbox" name="colours" value="{{ colour }}" />
             <span>{{ colour }}</span>
@@ -35,24 +43,19 @@
 
       <!-- PATTERN -->
       <fieldset>
-        <legend>What was its pattern? <span class="hint">(e.g. spotted, striped, plain)</span></legend>
-        <input
-          type="text"
-          name="pattern"
-          placeholder="e.g. spotted with white tips on the wings"
-          class="text-input"
-          maxlength="200"
-        />
+        <legend>Pattern <span class="hint">&mdash; describe it in your own words</span></legend>
+        <input type="text" name="pattern" class="text-input"
+          placeholder="e.g. spotted, striped, plain, speckled with white tips&hellip;"
+          maxlength="200" />
       </fieldset>
 
       <!-- SIZE -->
       <fieldset>
-        <legend>How big was it?</legend>
+        <legend>Size</legend>
         <div class="size-options">
-          {% set sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Very Large'] %}
-          {% for size in sizes %}
+          {% for size in ['Tiny', 'Small', 'Medium', 'Large', 'Very Large'] %}
           <label class="size-label">
-            <input type="radio" name="size" value="{{ size }}" {% if loop.index == 3 %}checked{% endif %} />
+            <input type="radio" name="size" value="{{ size }}" {% if size == 'Medium' %}checked{% endif %} />
             <span>{{ size }}</span>
           </label>
           {% endfor %}
@@ -61,78 +64,120 @@
 
       <!-- PICTURE -->
       <fieldset>
-        <legend>Got a photo? <span class="hint">(optional &mdash; helps a lot!)</span></legend>
+        <legend>Photo <span class="hint">&mdash; optional, but helpful</span></legend>
         <label class="file-label" for="picture">
           <span class="file-icon">&#x1F4F7;</span>
-          <span class="file-text" id="file-text">Click to choose a photo</span>
-          <input type="file" id="picture" name="picture" accept="image/*" onchange="updateFileName(this)" />
+          <span id="file-text">Choose a photo</span>
+          <input type="file" id="picture" name="picture" accept="image/*"
+            onchange="document.getElementById('file-text').textContent = this.files[0]?.name || 'Choose a photo'" />
         </label>
       </fieldset>
 
       <!-- DESCRIPTION -->
       <fieldset>
-        <legend>Anything else to add? <span class="hint">(optional)</span></legend>
-        <textarea
-          name="description"
-          rows="3"
-          placeholder="e.g. It was by the lake, sitting on a rock and eating a fish. It had a long curved beak."
-          class="text-input"
-          maxlength="500"
-        ></textarea>
+        <legend>Anything else? <span class="hint">&mdash; optional</span></legend>
+        <textarea name="description" rows="3" class="text-input"
+          placeholder="e.g. It was perched on a fence post near the river, bobbing its tail up and down."
+          maxlength="500"></textarea>
       </fieldset>
 
-      <button type="submit" class="identify-btn">
-        <span>&#x1F50D;</span> Identify Bird!
-      </button>
-
+      <button type="submit" class="identify-btn">&#x1F50D; Identify Bird</button>
     </form>
 
-    <!-- ERROR -->
     {% if error %}
     <div class="error-box">
       <strong>Oops!</strong> {{ error }}
     </div>
     {% endif %}
 
-    <!-- RESULTS -->
     {% if birds %}
     <section class="results">
-      <h2>&#x1F989; It could be one of these!</h2>
+      <h2>It could be one of these &mdash; which matches best?</h2>
       <div class="bird-cards">
         {% for bird in birds %}
         <div class="bird-card">
-          <div class="bird-number">{{ loop.index }}</div>
-          <h3>{{ bird.name }}</h3>
-          <p>{{ bird.description }}</p>
+          <div class="card-num">{{ loop.index }}</div>
+
+          {% if bird.image %}
+          <img class="card-img" src="{{ bird.image }}" alt="{{ bird.name }}"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+          {% endif %}
+          <div class="card-img-fallback" {% if bird.image %}style="display:none"{% endif %}>&#x1F426;</div>
+
+          <div class="card-body">
+            <h3>{{ bird.name }}</h3>
+            <p class="card-desc">{{ bird.description }}</p>
+            <table class="stats-table">
+              {% if bird.wingspan %}<tr><td class="stat-label">Wingspan</td><td class="stat-value">{{ bird.wingspan }}</td></tr>{% endif %}
+              {% if bird.weight %}<tr><td class="stat-label">Weight</td><td class="stat-value">{{ bird.weight }}</td></tr>{% endif %}
+              {% if bird.diet %}<tr><td class="stat-label">Diet</td><td class="stat-value">{{ bird.diet }}</td></tr>{% endif %}
+              {% if bird.habitat %}<tr><td class="stat-label">Habitat</td><td class="stat-value">{{ bird.habitat }}</td></tr>{% endif %}
+            </table>
+            <button class="select-btn"
+              data-bird="{{ bird | tojson | e }}"
+              onclick="selectBird(this)">
+              That's my bird!
+            </button>
+          </div>
         </div>
         {% endfor %}
       </div>
-      <p class="try-again-hint">Not quite right? Scroll up and add more details!</p>
+      <p class="try-again-hint">Not quite right? Scroll up and add more details.</p>
     </section>
     {% endif %}
-
   </main>
 
   <footer>
-    <p>Made for young birdwatchers &mdash; no coins needed &#x1F4AA;</p>
+    <p>Built for curious birdwatchers &mdash; no coins needed.</p>
   </footer>
 
   <script>
-    function updateFileName(input) {
-      const label = document.getElementById('file-text');
-      if (input.files && input.files[0]) {
-        label.textContent = input.files[0].name;
-      } else {
-        label.textContent = 'Click to choose a photo';
-      }
+    // Geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          const lat = pos.coords.latitude.toFixed(4);
+          const lon = pos.coords.longitude.toFixed(4);
+          document.getElementById('location-field').value = lat + ', ' + lon;
+          document.getElementById('loc-text').textContent = 'Location detected \u2713';
+          document.getElementById('location-status').classList.add('loc-ok');
+        },
+        function () {
+          document.getElementById('loc-text').textContent = 'Location not available \u2014 results may include non-local birds.';
+          document.getElementById('location-status').classList.add('loc-warn');
+        }
+      );
+    } else {
+      document.getElementById('loc-text').textContent = 'Location not supported by your browser.';
     }
 
-    // Scroll to results automatically if they exist
+    // Save selected bird to logbook
+    function selectBird(btn) {
+      const bird = JSON.parse(btn.dataset.bird);
+      bird.date = new Date().toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'short', year: 'numeric'
+      });
+
+      let log = JSON.parse(localStorage.getItem('birdlog') || '[]');
+      const alreadySaved = log.some(function (b) { return b.name === bird.name; });
+      if (!alreadySaved) {
+        log.push(bird);
+        localStorage.setItem('birdlog', JSON.stringify(log));
+        btn.textContent = '\u2713 Added to logbook!';
+      } else {
+        btn.textContent = '\u2713 Already in logbook';
+      }
+      btn.disabled = true;
+      btn.classList.add('btn-added');
+
+      // Highlight selected card
+      btn.closest('.bird-card').classList.add('card-selected');
+    }
+
+    // Scroll to results
     window.addEventListener('DOMContentLoaded', function () {
       const results = document.querySelector('.results');
-      if (results) {
-        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (results) results.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   </script>
 
